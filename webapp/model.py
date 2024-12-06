@@ -2,16 +2,14 @@ from PIL import Image
 import torch
 from transformers import AutoModelForImageClassification, AutoImageProcessor
 
-
-# provide an image and get back a prediction
-def get_prediction(image):
-    #using pre trained model
+# Provide an image and get back a prediction
+def get_prediction(image_path):
+    # Using pre-trained model
     repo_name = "Jayanth2002/dinov2-base-finetuned-SkinDisease"
     image_processor = AutoImageProcessor.from_pretrained(repo_name)
     model = AutoModelForImageClassification.from_pretrained(repo_name)
 
     # Load and preprocess the test image
-    image_path = "/content/img_416.jpg"
     image = Image.open(image_path)
     encoding = image_processor(image.convert("RGB"), return_tensors="pt")
 
