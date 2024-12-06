@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion'
 import { Upload, Search, Shield } from 'lucide-react'
 import Link from 'next/link'
+import photo from '../svgs/front.png'
+
 
 interface HomeProps {
   setActiveSection: (section: string) => void
@@ -35,7 +37,7 @@ export default function Home({ setActiveSection }: HomeProps) {
         <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg shadow-lg transform -rotate-6"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-400 rounded-lg shadow-lg transform rotate-3"></div>
         <img
-          src="/placeholder.svg"
+          src={photo.src}
           alt="Skin Disease Classification"
           className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-lg"
         />
