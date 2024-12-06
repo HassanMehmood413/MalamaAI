@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import os
 from werkzeug.utils import secure_filename
-
+from model.model import get_prediction
 
 app = Flask(__name__)
 
@@ -43,7 +43,10 @@ def image():
             return f"File uploaded successfully! <a href='/{UPLOAD_FOLDER}/{filename}'>View file</a>"
         
         return "Invalid file type", 400
-
+    
+    # send file to model
+    prediction = get_prediction()
+    
     # Render the upload form (for GET request)
     return render_template('upload.html')
 
@@ -58,7 +61,7 @@ def allowed_file(filename, allowed_extensions):
 def chat():
     #TODO
     # get first message that should be the diagnosis
-    ...
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
