@@ -11,7 +11,6 @@ def index():
     # configure landing page
     # user should press a continue button then get redirected to a different route
     
-    
     return render_template('index.html')
 
 
@@ -38,7 +37,7 @@ def image():
             return "No file selected", 400
         
         # Validate file type and save the file
-        if file and allowed_file(file.filename):
+        if file and allowed_file(file.filename, allowed_extensions):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return f"File uploaded successfully! <a href='/{UPLOAD_FOLDER}/{filename}'>View file</a>"
