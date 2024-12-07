@@ -23,7 +23,9 @@ def get_genai():
         if not any(message["role"] == "system" for message in chat_history):
             chat_history.insert(0, {
                 "role": "system",
-                "content": "You are a skin disease detection tool. You are very informative about each disease and you should provide some home remedies where safe; otherwise advise consulting a doctor."
+                "content": '''You are a skin disease detection tool. You are very informative about each disease and you should provide some home remedies where safe; otherwise advise consulting a doctor.
+                Respond concisely - use longer text only when suitable
+                '''
             })
 
         print("Sending messages to API:", chat_history)
