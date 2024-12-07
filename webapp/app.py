@@ -2,13 +2,51 @@ from flask import Flask, render_template, request, jsonify
 import os
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
-from model import get_prediction  # Import the prediction function
-from openai import OpenAI
+from model import get_prediction
+from together import Together
 from dotenv import load_dotenv
 
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
+
+# Set up Together API client
+client = Together(api_key=os.getenv('TOGETHER_API_KEY'))
+# Global variables
+chat_history = []
+prediction = None
+
+def get_genai():
+    try:
+        if not any(message["role"] == "system" for message in chat_history):
+            chat_history.insert(0, {
+                "role": "system",
+                "content": "You are a skin disease detection tool. You are very informative about each disease and you should provide some home remedies where safe; otherwise advise consulting a doctor."
+            })
+
+        print("Sending messages to API:", chat_history)
+        
+        response = client.chat.completions.create(
+            model="meta-llama/Llama-3.3-70B-Instruct-Turbo",
+            messages=chat_history,
+            temperature=0.7,
+            top_p=0.7,
+            top_k=50,
+            repetition_penalty=1,
+            stop=["<|eot_id|>", "<|eom_id|>"]
+        )
+        
+        if not response or not hasattr(response, 'choices'):
+            raise Exception("Invalid response from API")
+            
+        content = response.choices[0].message.content
+        chat_history.append({"role": "assistant", "content": content})
+        return content
+    except Exception as e:
+        print(f"API Error in get_genai: {str(e)}")
+        raise
 
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -65,19 +103,13 @@ def predict():
     
     return jsonify({'predicted_class': prediction})
 
-
-
-# Global chat history and prediction
-chat_history = []
-load_dotenv()
-
-
 @app.route('/chat', methods=['POST', 'GET'])
 def chat():
-    global prediction  # Reference the global prediction variable
-
+    global prediction, chat_history  # Reference global variables
+    
     if request.method == 'GET':
-        # Create an initial system prompt and user prompt
+        # Reset chat history for new conversation
+        chat_history = []
         system_prompt = (
             "You are a skin disease detection tool. You are very informative about each disease and "
             "you should provide some home remedies where safe; otherwise advise consulting a doctor."
@@ -88,56 +120,26 @@ def chat():
         chat_history.append({"role": "system", "content": system_prompt})
         chat_history.append({"role": "user", "content": user_prompt})
 
-        # Call the get_genai function
-        response = get_genai()
-
-        return jsonify({"response": response, "chat_history": chat_history})
+        try:
+            response = get_genai()
+            return jsonify({"response": response, "chat_history": chat_history})
+        except Exception as e:
+            print(f"Error in chat GET: {str(e)}")
+            return jsonify({"error": str(e)}), 500
 
     elif request.method == 'POST':
-        # Handle user input from POST request
         user_input = request.json.get('message', '')
         if not user_input:
             return jsonify({"error": "Message is required"}), 400
 
-        # Add the user's input to chat history
         chat_history.append({"role": "user", "content": user_input})
 
-        # Generate AI response
-        response = get_genai()
-
-        # Return both the current response and the entire chat history
-        return jsonify({"response": response, "chat_history": chat_history})
-
-# Set up OpenAI API configuration
-base_url = "https://api.aimlapi.com/v1"
-api_key = os.get_env('AIML_API_KEY')
-print(api_key)
-system_prompt = (
-    "You are a skin disease detection tool. You are very informative about each disease and "
-    "you should provide some home remedies where safe; otherwise advise consulting a doctor."
-)
-
-# Create OpenAI API client
-api = OpenAI(api_key=api_key, base_url=base_url)
-
-
-def get_genai():
-    # Ensure system prompt is the first message in the chat history
-    if not any(message["role"] == "system" for message in chat_history):
-        chat_history.insert(0, {"role": "system", "content": system_prompt})
-
-    # Generate a response from the AI model
-    completion = api.chat.completions.create(
-        model="mistralai/Mistral-7B-Instruct-v0.2",
-        messages=chat_history,
-        temperature=0.7,
-        max_tokens=256,
-    )
-
-    # Extract and return the AI's response
-    response = completion.choices[0].message.content
-    chat_history.append({"role": "assistant", "content": response})  # Add AI's response to chat history
-    return response
+        try:
+            response = get_genai()
+            return jsonify({"response": response, "chat_history": chat_history})
+        except Exception as e:
+            print(f"Error in chat POST: {str(e)}")
+            return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
