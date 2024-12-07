@@ -2,6 +2,9 @@ from PIL import Image
 import torch
 from transformers import AutoModelForImageClassification, AutoImageProcessor
 
+prediction = str()
+chat_history = []
+
 # Provide an image and get back a prediction
 def get_prediction(image_path):
     # Using pre-trained model
@@ -24,4 +27,9 @@ def get_prediction(image_path):
     class_names = ['Basal Cell Carcinoma', 'Darier_s Disease', 'Epidermolysis Bullosa Pruriginosa', 'Hailey-Hailey Disease', 'Herpes Simplex', 'Impetigo', 'Larva Migrans', 'Leprosy Borderline', 'Leprosy Lepromatous', 'Leprosy Tuberculoid', 'Lichen Planus', 'Lupus Erythematosus Chronicus Discoides', 'Melanoma', 'Molluscum Contagiosum', 'Mycosis Fungoides', 'Neurofibromatosis', 'Papilomatosis Confluentes And Reticulate', 'Pediculosis Capitis', 'Pityriasis Rosea', 'Porokeratosis Actinic', 'Psoriasis', 'Tinea Corporis', 'Tinea Nigra', 'Tungiasis', 'actinic keratosis', 'dermatofibroma', 'nevus', 'pigmented benign keratosis', 'seborrheic keratosis', 'squamous cell carcinoma', 'vascular lesion']
     predicted_class_name = class_names[predicted_class_idx]
 
+    # set prediction as a global variable so it can be used 
+    global prediction
+    prediction = predicted_class_name
+
     return predicted_class_name
+
