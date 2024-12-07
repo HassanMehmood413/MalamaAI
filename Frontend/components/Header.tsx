@@ -2,7 +2,9 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Sun, Moon } from 'lucide-react'
+import logo from '../svgs/logosvg.svg'
 
 interface HeaderProps {
   activeSection: string
@@ -23,14 +25,23 @@ export default function Header({ activeSection, setActiveSection, theme, toggleT
     <header className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-md sticky top-0 z-10`}>
       <div className="container mx-auto px-4 py-6">
         <div className="flex justify-between items-center">
-          <motion.h1
-            className={`text-3xl font-bold ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'}`}
+          <motion.div
+            className="flex items-center space-x-3"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Skin Disease Classifier
-          </motion.h1>
+            <Image
+              src={logo}
+              alt="Malama AI Logo"
+              width={50}
+              height={50}
+              className={`${theme === 'dark' ? 'filter brightness-0 invert' : ''}`}
+            />
+            <h1 className={`text-3xl font-bold ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'}`}>
+              Malama AI
+            </h1>
+          </motion.div>
           <nav className="flex items-center">
             <ul className="flex space-x-4 mr-4">
               {navItems.map((item) => (
@@ -67,4 +78,3 @@ export default function Header({ activeSection, setActiveSection, theme, toggleT
     </header>
   )
 }
-
