@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Set up Together API client
-client = Together(api_key=os.getenv('TOGETHER_API_KEY'))
+client = Together(api_key="53f6aa57582400b43f36fa79a8afda560b90e7ddde86ecaa61eead651634df87")
 # Global variables
 chat_history = []
 prediction = None
@@ -24,7 +24,6 @@ def get_genai():
             chat_history.insert(0, {
                 "role": "system",
                 "content": '''You are a skin disease detection tool. You are very informative about each disease and you should provide some home remedies where safe; otherwise advise consulting a doctor.
-                Respond concisely - use longer text only when suitable
                 '''
             })
 
