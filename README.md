@@ -1,3 +1,40 @@
+# MalamaAI Team
+<hr/>
+<table>
+    <tbody>
+        <tr>
+            <td align="center">
+                <a href="https://github.com/HassanMehmood413">
+                    <img src="https://avatars.githubusercontent.com/u/170643017?s=400&u=3b631b0e7ee1d167615824d1037ec0de89d89d3b&v=4" width="100px;" alt="Hassan Mehmood"/>
+                    <br />
+                    <sub><b>Hassan Mehmood</b></sub>
+                </a> 
+            </td>
+          <td align="center">
+                <a href="https://github.com/row-huh">
+                    <img src="https://avatars.githubusercontent.com/u/74301640?v=4" width="100px;" alt="Roha Pathan"/>
+                    <br />
+                    <sub><b>Roha Pathan</b></sub>
+                </a> 
+            </td>
+            <td align="center">
+                <a href="https://github.com/Labiokor">
+                    <img src="https://avatars.githubusercontent.com/u/122874512?v=4" width="100px;" alt="Joy Chris-Odai Nkor"/>
+                    <br />
+                    <sub><b>Joy Chris-Odai Nkor</b></sub>
+                </a> 
+            </td>
+            <td align="center">
+                <a href="">
+                    <img src="" width="100px;" alt="Labiokor"/>
+                    <br />
+                    <sub><b>Labiokor</b></sub>
+                </a> 
+            </td>
+        </tr> 
+</tbody>
+<table>
+<hr/>
 
 # MalamaAI
 
