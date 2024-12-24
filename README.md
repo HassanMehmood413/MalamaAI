@@ -26,9 +26,9 @@
             </td>
             <td align="center">
                 <a href="">
-                    <img src="" width="100px;" alt="Labiokor"/>
+                    <img src="" width="100px;" alt="Okey Amy"/>
                     <br />
-                    <sub><b>Labiokor</b></sub>
+                    <sub><b>Okey Amy</b></sub>
                 </a> 
             </td>
         </tr> 
